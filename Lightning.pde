@@ -16,7 +16,6 @@ void draw() {
       int yShift=(int)((Math.random()*20));
       noStroke();
       strokeWeight(0);
-      stroke(0,0, 0);
       fill(255, 69, 0);
       triangle(endX-10+xShift, 275+yShift, endX+10+xShift, 275+yShift, endX+xShift, 255+yShift);
     }
