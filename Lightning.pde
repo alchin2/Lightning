@@ -1,60 +1,77 @@
-int startX = 150;
-int startY = 0;
-int endX = 0;
-int endY = 150;
-boolean drawTree=true;
-  void setup()
-{
-  size(300, 300);
-  strokeWeight(3);
-  background(55, 35, 84);
-}
-void draw() {
-  //draw fire
-  if (endY>264 && endY<296){
-      int xShift=(int)(((Math.random()*20)-10));
-      int yShift=(int)((Math.random()*20));
-      noStroke();
-      strokeWeight(0);
-      fill(255, 69, 0);
-      triangle(endX-10+xShift, 275+yShift, endX+10+xShift, 275+yShift, endX+xShift, 255+yShift);
-    }
-    //draw tree
-       if(drawTree==true){
-  for (int i = 0; i<300; i+=25) {
-    tree(i, 250);
-  }}
-  
-  //draw lightning
-   noStroke();
-   fill(0,0,0,7);
-   rect(0,0,300,300);
-    stroke((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255));
-  while (endY<265) {
-    drawTree=true;
-    strokeWeight(3);
-    endX=startX+(int)(((Math.random()*20)-10));
-    endY=startY+(int)(Math.random()*10);
-    line(startX, startY, endX, endY);
-    startX=endX;
-    startY=endY; 
+particle []pList = new particle[100];
+PImage creeper, creeper2;
+void setup() {
+  size(800, 800);
+  background(0);
+  for (int i = 1; i<pList.length; i++) {
+    pList[i]=new particle();
+     pList[0]=new oddParticle();
   }
 }
-void mousePressed()
-{
+void draw() {
+  background(0);
+  noStroke();
+  pList[0].move();
+    pList[0].show();
+    for (int i = 1; i<pList.length; i++) {
+    pList[i].move();
+    pList[i].show();
+    
+}
+}
+void mousePressed() {
+  if (mousePressed) {
+      for (int i = 0; i < pList.length; i++) {
+    pList[i] = new particle();
+    pList[0]= new oddParticle();
+  }
+    background(0);
+  }
+  }
 
-  startX = 150;
-  startY = 0;
-  endX = 0;
-  endY = 150;
+
+class particle {
+  double myX, myY, myAngle, mySpeed;
+  int myColor;
+  particle() {
+    myX=Math.random()*40+381;
+    myY=Math.random()*40+381;
+    myAngle=Math.random()*6.28;
+    mySpeed=Math.random()*5+5;
+    myColor = color((int)(Math.random()*255+40), (int)(Math.random()*46+200), (int)(Math.random()*96+200));
+  }
+  void move() {
+    
+    myX+=Math.cos(myAngle)*mySpeed;
+    myY+=Math.sin(myAngle)*mySpeed;
+  }
+  
+  void show() {
+  stroke(myColor);
+  fill(myColor);
+  ellipse((int)myX,(int)myY,5,5);
+  }
 }
 
-void tree(int x, int y) {
+class oddParticle extends particle {
+  oddParticle() {
+    myX=400;
+    myY=200;
+    mySpeed=15;
+    myAngle=0;
+  }
+  void move(){
+     myAngle+=(.1);
+   myX+=Math.cos(myAngle)*mySpeed;
+    myY+=Math.sin(myAngle)*mySpeed;
+}
+  void show(){
+    background(0);
   noStroke();
-  strokeWeight(0);
   fill(150, 75, 0);
-  rect(x+10, y+30, 10, 25);
+  rect((int)myX+10, (int)myY+30, 10, 25);
   fill(5, 71, 42);
-  triangle(x+15, y+15, x, y+45, x+30, y+45);
-  triangle(x+15, y+5, x+5, y+30, x+25, y+30);
+  triangle((int)myX+15, (int)myY+15, (int)myX, (int)myY+45, (int)myX+30, (int)myY+45);
+  triangle((int)myX+15, (int)myY+5, (int)myX+5, (int)myY+30, (int)myX+25, (int)myY+30);
+  }
 }
